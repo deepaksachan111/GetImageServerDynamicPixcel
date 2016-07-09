@@ -9,13 +9,19 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"></ListView>
 
-
+    <CheckBox
+        android:text="Hello"
+        android:id="@+id/checkboxdddddddddddddrdr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btn_next"
             android:text="Next"
-           android:layout_weight="1"
+            android:layout_weight="1"
             android:layout_width="fill_parent"
             android:layout_height="0dp" />
+
+
 
 
 </LinearLayout>

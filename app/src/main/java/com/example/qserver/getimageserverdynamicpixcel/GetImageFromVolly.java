@@ -2,6 +2,7 @@ package com.example.qserver.getimageserverdynamicpixcel;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Movie;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,6 +47,8 @@ public class GetImageFromVolly extends AppCompatActivity {
         fetchImages();
 
          recyclerView = (RecyclerView)findViewById(R.id.card_recycler_view);
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
+
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -91,6 +94,7 @@ public class GetImageFromVolly extends AppCompatActivity {
 
                                 adapter = new ImageAdapter(getApplicationContext(),images);
                                 recyclerView.setAdapter(adapter);
+
                             } catch (JSONException e) {
                                 Log.e(TAG, "Json parsing error: " + e.getMessage());
                             }
@@ -115,6 +119,10 @@ public class GetImageFromVolly extends AppCompatActivity {
 
     public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> {
 
+        int color  = Color.parseColor("#7C1419");
+        int color2  = Color.parseColor("#3B6C00");
+
+        int getColor[] = new int[]{color,color2};
         private List<ImageDataVolly> moviesList;
         private Context context;
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -137,6 +145,13 @@ public class GetImageFromVolly extends AppCompatActivity {
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.image_list_row_adapter, parent, false);
+             //int colorpos = recyclerView.indexOfChild(parent) % getColor.length;
+             //itemView.setBackgroundColor(getColor[colorpos]);
+
+
+
+
+
             itemView.setOnClickListener(new MyOnClickListener());
             return new MyViewHolder(itemView);
         }

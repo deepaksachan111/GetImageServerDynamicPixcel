@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,19 +43,48 @@ public class MainActivity extends AppCompatActivity {
 private ListView listView;
 private ArrayList<Data> dataArrayList = new ArrayList<>();
 private ArrayAdapter adapter ;
+    CheckBox checkBox;
+ boolean flag  = true;
+
 
 @Override
 protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView =(ListView)findViewById(R.id.listview);
-
+      checkBox = (CheckBox)findViewById(R.id.checkboxdddddddddddddrdr);
     Button button =(Button)findViewById(R.id.btn_next);
+
+    checkBox.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if(flag  ) {
+                checkBox.setTextColor(getResources().getColor(R.color.green));
+                checkBox.setText("Deepak");
+                flag = false;
+
+            }
+            else {
+                checkBox.setTextColor(Color.RED);
+                checkBox.setText("Sachan");
+                flag = true;
+            }
+        }
+    });
+
+
+
 
     button.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(getApplicationContext(),GetImageFromVolly.class));
+
+            if(checkBox.isChecked()){
+                checkBox.setText("Kumar");
+                Snackbar.make(v, checkBox.getText().toString(),Snackbar.LENGTH_LONG).show();
+            }
+           startActivity(new Intent(getApplicationContext(),GetImageFromVolly.class));
         }
     });
 
@@ -75,6 +108,19 @@ protected void onCreate(Bundle savedInstanceState) {
         new MyAsynckTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,url);
 
         }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            // Change color
+
+            checkBox.setTextColor(getResources().getColor(R.color.green));
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            // Change it back
+            checkBox.setTextColor(Color.RED);
+        }
+        return super.onTouchEvent(event);
+    }
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
