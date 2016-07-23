@@ -34,10 +34,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 private ListView listView;
@@ -208,7 +212,7 @@ private class MyAsynckTask extends AsyncTask<String,Void,String>{
 private  class MyAdapter extends ArrayAdapter {
     ArrayList<Data> data;
     Activity context;
-
+    private HashMap<Integer, AsyncTask> integerAsyncTaskHashMap = new HashMap<Integer, AsyncTask>();
     public MyAdapter(Activity context, int resource,ArrayList<Data> data) {
         super(context, resource, data);
         this.context = context;
@@ -252,29 +256,28 @@ private  class MyAdapter extends ArrayAdapter {
 
             String image_url= "http://img.youtube.com/vi/";
             new ImageAsynckTask(viewholder).execute(image_url + datas.getVideo_id() + "/mqdefault.jpg");
-           // Picasso.with(context).load(image_url+datas.getVideo_id()+ "/mqdefault.jpg").resize(240, 150).into(viewholder.imageView);
+          // Picasso.with(context).load(image_url+datas.getVideo_id()+ "/mqdefault.jpg").resize(240, 150).into(viewholder.imageView);
 
-
-            // integerAsyncTaskHashMap.put(position, myDisplayAsynctask);
+             integerAsyncTaskHashMap.put(position, new ImageAsynckTask(viewholder));
 
         }
         return convertView;
     }
 
     private class  ImageAsynckTask extends  AsyncTask<String,Void,Bitmap>{
-        //private int pos;
+        private int pos;
         private Viewholder viewHolder;
         Bitmap bitmap;
 
         public ImageAsynckTask(Viewholder viewHolder) {
             this.viewHolder = viewHolder;
-           // this.pos = viewHolder.position;
+            this.pos = viewHolder.position;
         }
         @Override
         protected Bitmap doInBackground(String... params) {
 
             try {
-                InputStream in  = new java.net.URL(params[0]).openStream();
+               InputStream in = new java.net.URL(params[0]).openStream();
                 bitmap = BitmapFactory.decodeStream(in);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -289,7 +292,7 @@ private  class MyAdapter extends ArrayAdapter {
             super.onPostExecute(bitmap);
 
 
-            if (bitmap != null) {
+            if (bitmap != null && viewHolder.position == pos) {
                 viewHolder.imageView.setImageBitmap(bitmap);
             }
             else {
